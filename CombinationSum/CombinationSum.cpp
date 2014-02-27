@@ -24,22 +24,21 @@ class Solution {
 public:
     vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
         sort(begin(candidates), end(candidates));
-        vector<vector<int> > res;
         vector<int> path;
+        vector<vector<int> > res;
         combinationSumHelper(candidates, target, 0, path, res);
         return res;
     }
 
-    void combinationSumHelper(vector<int> &candidates, int target, int start, vector<int> & path, vector<vector<int> > & res) {
-        if (target < 0) return;
-        if (target == 0) {
-            res.push_back(path);
+    void combinationSumHelper(vector<int> &candidates, int target, int begin, vector<int> & path, vector<vector<int> > & res) {
+        if (target <= 0) {
+            if (target == 0) res.push_back(path);
             return;
         }
 
-        for (; start < candidates.size(); start++) {
-            path.push_back(candidates[start]);
-            combinationSumHelper(candidates, target - candidates[start], start, path, res);
+        for (int cur = begin; cur < candidates.size(); cur++) {
+            path.push_back(candidates[cur]);
+            combinationSumHelper(candidates, target - candidates[cur], cur, path, res);
             path.pop_back();
         }
     }

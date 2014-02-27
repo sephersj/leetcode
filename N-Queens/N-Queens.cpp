@@ -29,9 +29,9 @@ public:
     void solveNQueensHelper1(vector<int> & board, int row, vector<vector<string> > & res) {
         int N = board.size();
         if (row == N) {
-            vector<string> sub(N, string(N, '.'));
-            for (int r = 0; r < N; r++) sub[r][board[r]] = 'Q';
-            res.push_back(sub);
+            vector<string> path(N, string(N, '.'));
+            for (int r = 0; r < N; r++) path[r][board[r]] = 'Q';
+            res.push_back(path);
             return;
         }
         for (int col = 0; col < N; col++) {

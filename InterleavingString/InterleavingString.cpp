@@ -21,34 +21,14 @@ using namespace std;
 class Solution {
 public:
     bool isInterleave(string s1, string s2, string s3) {
-        return isInterleave2(s1, s2, s3);
-    }
-
-    bool isInterleave1(string & s1, & string s2, & string s3) {
-        int n1 = s1.size(), n2 = s2.size(), n3 = s3.size();
-        if (n1 + n2 != n3) return false;
-        vector<vector<int> > memo(n1 + 1, vector<int>(n2 + 1, -1));
-        return dfs(s1, s2, s3, 0, 0, memo);
-    }
-
-    bool isInterleaveHelper1(string & s1, string & s2, string & s3, int i, int j, vector<vector<int> > & memo) {
-        if (memo[i][j] != -1) return memo[i][j];
-        if (i == s1.size() && j == s2.size()) return memo[i][j] = true;
-        if (i < s1.size() && s1[i] == s3[i + j] && isInterleaveHelper1(s1, s2, s3, i + 1, j, memo)) return memo[i][j] = true;
-        if (j < s2.size() && s2[j] == s3[i + j] && isInterleaveHelper1(s1, s2, s3, i, j + 1, memo)) return memo[i][j] = true;
-        return memo[i][j] = false;
-    }
-
-    bool isInterleave2(string & s1, string & s2, string & s3) {
-        int n1 = s1.size(), n2 = s2.size(), n3 = s3.size();
-        if (n1 + n2 != n3) return false;
+        int n1 = s1.size(), n2 = s2.size();
+        if (s3.size() != n1 + n2) return false;
         vector<vector<bool> > dp(n1 + 1, vector<bool>(n2 + 1, false));
         for (int i = 0; i <= n1; i++) {
             for (int j = 0; j <= n2; j++) {
                 if (i == 0 && j == 0) dp[i][j] = true;
-                else if (i == 0) dp[i][j] = (s2[j - 1] == s3[i + j - 1] && dp[i][j - 1]);
-                else if (j == 0) dp[i][j] = (s1[i - 1] == s3[i + j - 1] && dp[i - 1][j]);
-                else dp[i][j] = (s2[j - 1] == s3[i + j - 1] && dp[i][j - 1]) || (s1[i - 1] == s3[i + j - 1] && dp[i - 1][j]);
+                else if (i != 0 && s1[i - 1] == s3[i + j - 1] && dp[i - 1][j]) dp[i][j] = true;
+                else if (j != 0 && s2[j - 1] == s3[i + j - 1] && dp[i][j - 1]) dp[i][j] = true;
             }
         }
         return dp[n1][n2];

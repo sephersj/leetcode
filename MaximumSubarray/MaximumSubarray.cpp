@@ -24,9 +24,8 @@ public:
     int maxSubArray1(int A[], int n) {
         int sum = 0, res = INT_MIN;
         for (int i = 0; i < n; i++) {
-            sum += A[i];
-            if (sum > res) res = sum;
-            if (sum < 0) sum = 0;
+            sum = max(sum + A[i], A[i]);
+            res = max(res, sum);
         }
         return res;
     }
