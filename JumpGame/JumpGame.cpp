@@ -39,14 +39,14 @@ int main() {
     Solution sol;
 
     {
-        int p0[] = {2,3,1,1,4};
-        int p1 = sizeof(p0)/sizeof(p0[0]);
+        int p0[] = { 2, 3, 1, 1, 4 };
+        int p1 = sizeof(p0) / sizeof(p0[0]);
         cout << sol.canJump(p0, p1) << endl;
     }
 
     {
-        int p0[] = {3,2,1,0,4};
-        int p1 = sizeof(p0)/sizeof(p0[0]);
+        int p0[] = { 3, 2, 1, 0, 4 };
+        int p1 = sizeof(p0) / sizeof(p0[0]);
         cout << sol.canJump(p0, p1) << endl;
     }
 

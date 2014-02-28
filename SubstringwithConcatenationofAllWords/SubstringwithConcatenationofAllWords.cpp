@@ -30,16 +30,16 @@ public:
 
     vector<int> findSubstring1(string S, vector<string> &L) {
         vector<int> res;
-        if (L.empty() || L[0].empty()) return res;
-        unordered_map<string, int> toFind;
-        for (auto it : L) toFind[it]++;
-        int M = L.size(), K = L[0].size(), N = S.size();
-        for (int i = 0; i <= N-M*K; i++) {
-            unordered_map<string, int> hasFound;
+        if (S.empty() || L.empty() || L[0].empty()) return res;
+        int N = S.size(), M = L.size(), K = L[0].size();
+        unordered_map<string, int> toFind, hasFound;
+        for (string & str : L) toFind[str]++;
+        for (int i = 0; i <= N - M*K; i++) {
+            hasFound.clear();
             int j = 0;
             for (; j < M; j++) {
-                string sub = S.substr(i+j*K, K);
-                if (toFind.count(sub) == 0) break;
+                string sub = S.substr(i + j*K, K);
+                if (!toFind.count(sub)) break;
                 hasFound[sub]++;
                 if (hasFound[sub] > toFind[sub]) break;
             }
@@ -50,32 +50,21 @@ public:
 
     vector<int> findSubstring2(string S, vector<string> &L) {
         vector<int> res;
-        if (S.empty() || L.empty()) return res;
-        unordered_map<string, int> toFind;
+        if (S.empty() || L.empty() || L[0].empty()) return res;
+        unordered_map<string, int> toFind, hasFound;
         for (auto & str : L) toFind[str]++;
         int N = S.size(), M = L.size(), K = L[0].size();
         for (int k = 0; k < K; k++) {
-            unordered_map<string, int> hasFound;
+            hasFound.clear();
             int cnt = 0;
-            for (int start = k, end = k; end < N; end += K) {
-                if (!toFind.count(S.substr(end, K))) {
-                    hasFound.clear();
-                    cnt = 0;
-                    start = end + K;
-                }
-                else if (hasFound[S.substr(end, K)] < toFind[S.substr(end, K)]) {
-                    hasFound[S.substr(end, K)]++;
-                    cnt++;
-                }
+            for (int begin = k, end = k; end < N; end += K) {
+                if (!toFind.count(S.substr(end, K))) hasFound.clear(), cnt = 0, begin = end + K;
+                else if (hasFound[S.substr(end, K)] < toFind[S.substr(end, K)]) hasFound[S.substr(end, K)]++, cnt++;
                 else {
-                    while (S.substr(start, K) != S.substr(end, K)) {
-                        hasFound[S.substr(start, K)]--;
-                        cnt--;
-                        start += K;
-                    }
-                    start += K;
+                    while (S.substr(begin, K) != S.substr(end, K)) hasFound[S.substr(begin, K)]--, cnt--, begin += K;
+                    begin += K;
                 }
-                if (cnt == M) res.push_back(start);
+                if (cnt == M) res.push_back(begin);
             }
         }
         return res;

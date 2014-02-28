@@ -44,40 +44,35 @@ public:
         return cloneGraph2(node);
     }
 
-    UndirectedGraphNode *cloneGraph1(UndirectedGraphNode *node) {
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
         if (node == NULL) return NULL;
-        unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> visit;
-        return dfs(node, visit);
+        unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> tb;
+        return dfs(node, tb);
     }
 
-    UndirectedGraphNode * dfs(UndirectedGraphNode * cur, unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> & visit) {
-        if (visit.count(cur)) return visit[cur];
-        auto copy = new UndirectedGraphNode(cur->label);
-        visit[cur] = copy;
-        for (auto next : cur->neighbors) copy->neighbors.push_back(dfs(next, visit));
-        return copy;
+    UndirectedGraphNode * dfs(UndirectedGraphNode * u, unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> & tb) {
+        if (!tb.count(u)) {
+            tb[u] = new UndirectedGraphNode(u->label);
+            for (auto v : u->neighbors) tb[u]->neighbors.push_back(dfs(v, tb));
+        }
+        return tb[u];
     }
 
     UndirectedGraphNode *cloneGraph2(UndirectedGraphNode *node) {
-        unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> visit;
+        if (node == NULL) return NULL;
+        unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> tb;
+        tb[node] = new UndirectedGraphNode(node->label);
         queue<UndirectedGraphNode*> qs;
-        visit[node] = new UndirectedGraphNode(node->label);
         qs.push(node);
         while (!qs.empty()) {
-            auto cur = qs.front();
+            UndirectedGraphNode * u = qs.front();
             qs.pop();
-            for (auto next : cur->neighbors) {
-                if (visit.count(next)) {
-                    visit[cur]->neighbors.push_back(visit[next]);
-                }
-                else {
-                    visit[next] = new UndirectedGraphNode(next->label);
-                    visit[cur]->neighbors.push_back(visit[next]);
-                    qs.push(next);
-                }
+            for (UndirectedGraphNode * v : u->neighbors) {
+                if (!tb.count(v)) tb[v] = new UndirectedGraphNode(v->label), qs.push(v);
+                tb[u]->neighbors.push_back(tb[v]);
             }
         }
-        return visit[node];
+        return tb[node];
     }
 };
 

@@ -18,17 +18,15 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        bool visit[256];
-        memset(visit, 0, sizeof(visit));
+        bool visit[256] = { false };
         int N = s.size(), res = 0;
-        for (int start = 0, end = 0; end < N; end++) {
+        for (int begin = 0, end = 0; end < N; end++) {
             if (visit[s[end]]) {
-                while (s[start] != s[end]) visit[s[start++]] = false;
-                visit[s[start++]] = false;
+                while (s[begin] != s[end]) visit[s[begin++]] = false;
+                visit[s[begin++]] = false;
             }
             visit[s[end]] = true;
-            int sub = end-start+1;
-            res = max(res, sub);
+            res = max(res, end - begin + 1);
         }
         return res;
     }

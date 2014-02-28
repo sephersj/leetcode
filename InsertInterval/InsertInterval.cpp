@@ -38,20 +38,14 @@ public:
     vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
         vector<Interval> res;
         bool done = false;
-        for (auto it : intervals) {
-            if (it.end < newInterval.start) {
-                res.push_back(it);
-            }
-            else if (newInterval.end < it.start) {
-                if (!done) {
-                    res.push_back(newInterval);
-                    done = true;
-                }
-                res.push_back(it);
+        for (auto cur : intervals) {
+            if (cur.start <= newInterval.end && cur.end >= newInterval.start) {
+                newInterval.start = min(newInterval.start, cur.start);
+                newInterval.end = max(newInterval.end, cur.end);
             }
             else {
-                newInterval.start = min(newInterval.start, it.start);
-                newInterval.end = max(newInterval.end, it.end);
+                if (!done && newInterval.end < cur.start) res.push_back(newInterval), done = true;
+                res.push_back(cur);
             }
         }
         if (!done) res.push_back(newInterval);

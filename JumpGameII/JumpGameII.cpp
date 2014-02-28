@@ -39,8 +39,8 @@ int main() {
     Solution sol;
 
     {
-        int p0[] = {2,3,1,1,4};
-        int p1 = sizeof(p0)/sizeof(p0[0]);
+        int p0[] = { 2, 3, 1, 1, 4 };
+        int p1 = sizeof(p0) / sizeof(p0[0]);
         cout << sol.jump(p0, p1) << endl;
     }
 
