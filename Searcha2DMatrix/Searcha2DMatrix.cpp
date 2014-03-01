@@ -17,8 +17,8 @@
 // Given target = 3, return true.
 // 
 // Complexity:
-// 2D Binary Search O(m*nlog(m*n)) time
-// Upper Right Linear Search O(m*n) time
+// 2D Binary Search O(max(m,n)*log(max(m,n))) time
+// Upper Right Linear Search O(m+n) time
 // 1D Binary Search O(log(m*n)) time
 //============================================================================
 

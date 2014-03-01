@@ -27,36 +27,44 @@
 
 using namespace std;
 
+int di[] = {-1, 1, 0, 0};
+int dj[] = {0, 0, -1, 1};
+
 class Solution {
 public:
     void solve(vector<vector<char>> &board) {
         if (board.empty() || board[0].empty()) return;
         int M = board.size(), N = board[0].size();
-        for (int j = 0; j < N; j++) {
-            if (board[0][j] == 'O') bfs(board, M, N, 0, j);
-            if (board[M - 1][j] == 'O') bfs(board, M, N, M - 1, j);
-        }
         for (int i = 0; i < M; i++) {
             if (board[i][0] == 'O') bfs(board, M, N, i, 0);
-            if (board[i][N - 1] == 'O') bfs(board, M, N, i, N - 1);
+            if (board[i][N-1] == 'O') bfs(board, M, N, i, N-1);
         }
+        for (int j = 0; j < N; j++) {
+            if (board[0][j] == 'O') bfs(board, M, N, 0, j);
+            if (board[M-1][j] == 'O') bfs(board, M, N, M-1, j);
+        }
+
         for (int i = 0; i < M; i++) {
             for (int j = 0; j < N; j++) {
-                if (board[i][j] == 'O') board[i][j] = 'X';
-                else if (board[i][j] == 'D') board[i][j] = 'O';
+                if (board[i][j] == 'D') board[i][j] = 'O';
+                else if (board[i][j] == 'O') board[i][j] = 'X';
             }
         }
     }
 
     void bfs(vector<vector<char>> &board, int M, int N, int i, int j) {
+        board[i][j] = 'D';
         queue<int> qs;
-        board[i][j] = 'D', qs.push(i*N + j);
+        qs.push(i*N+j);
         while (!qs.empty()) {
-            i = qs.front() / N, j = qs.front() % N, qs.pop();
-            if (i - 1 >= 0 && board[i - 1][j] == 'O') board[i - 1][j] = 'D', qs.push((i - 1)*N + j);
-            if (i + 1 < M && board[i + 1][j] == 'O') board[i + 1][j] = 'D', qs.push((i + 1)*N + j);
-            if (j - 1 >= 0 && board[i][j - 1] == 'O') board[i][j - 1] = 'D', qs.push(i*N + j - 1);
-            if (j + 1 < N && board[i][j + 1] == 'O') board[i][j + 1] = 'D', qs.push(i*N + j + 1);
+            i = qs.front()/N, j = qs.front()%N;
+            qs.pop();
+            for (int k = 0; k < 4; k++) {
+                int ni = i+di[k], nj = j+dj[k];
+                if (ni == -1 || ni == M || nj == -1 || nj == N || board[ni][nj] != 'O') continue;
+                board[ni][nj] = 'D';
+                qs.push(ni*N+nj);
+            }
         }
     }
 };
