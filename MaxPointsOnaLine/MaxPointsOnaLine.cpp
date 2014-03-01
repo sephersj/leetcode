@@ -31,17 +31,16 @@ public:
     int maxPoints(vector<Point> &points) {
         int N = points.size();
         if (N < 3) return N;
-        int res = 1;
+        unordered_map<int, int> tb;
+        int res = 0;
         for (int i = 0; i < N; i++) {
-            int o = 1, u = 0, v = 0;
-            unordered_map<int, int> ks;
+            tb.clear();
+            int o = 0, u = 0, v = 0;
             for (int j = 0; j < N; j++) {
-                if (i == j) continue;
-                int xx = points[j].x - points[i].x;
-                int yy = points[j].y - points[i].y;
-                if (xx == 0 && yy == 0) o++;
-                else if (xx == 0) v++;
-                else u = max(u, ++ks[1e6 * yy / xx]);
+                int x = points[j].x - points[i].x, y = points[j].y - points[i].y;
+                if (x == 0 && y == 0) o++;
+                else if (x == 0) v++;
+                else u = max(u, ++tb[1e6*y / x]);
             }
             res = max(res, o + max(u, v));
         }

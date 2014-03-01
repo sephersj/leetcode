@@ -44,31 +44,34 @@ class Solution {
 public:
     vector<string> fullJustify(vector<string> &words, int L) {
         vector<string> res;
+        int N = words.size();
         int begin = 0, end = 0;
-        while (end < words.size()) {
+        while (end < N) {
             int len = L;
-            for (; end < words.size(); end++) {
-                int tmp = len - (len == L ? words[end].size() : words[end].size() + 1);
+            for (; end < N; end++) {
+                int tmp = len - words[end].size() - (len == L ? 0 : 1);
                 if (tmp < 0) break;
                 len = tmp;
             }
-            ostringstream os;
             int num = end - begin - 1;
-            if (num != 0 && end != words.size()) {
-                int avg = len / num;
+            ostringstream os;
+            if (num != 0 && end != N) {
+                int avg = len / num + 1;
                 len %= num;
                 for (; begin < end; begin++) {
-                    if (begin == end - 1) os << words[begin];
-                    else os << words[begin] << string(avg + 1, ' ');
-                    if (len > 0) os << ' ', len--;
+                    os << words[begin];
+                    if (begin != end - 1) {
+                        os << string(avg, ' ');
+                        if (len > 0) os << " ", len--;
+                    }
                 }
             }
             else {
                 for (; begin < end; begin++) {
-                    if (begin == end - 1) os << words[begin];
-                    else os << words[begin] << ' ';
+                    os << words[begin];
+                    if (begin != end - 1) os << " ";
                 }
-                if (len > 0) os << string(len, ' ');
+                os << string(len, ' ');
             }
             res.push_back(os.str());
         }
