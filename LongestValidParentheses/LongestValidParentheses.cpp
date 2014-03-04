@@ -27,20 +27,14 @@ public:
     }
 
     int longestValidParentheses1(string & s) {
-        int N = s.size(), res = 0, last = -1;
         stack<int> stk;
-        for (int i = 0; i < (int)s.size(); i++) {
-            if (s[i] == '(') {
-                stk.push(i);
-                continue;
-            }
-
-            if (stk.empty()) {
-                last = i;
-            }
+        int res = 0, last = -1;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(') stk.push(i);
+            else if (stk.empty()) last = i;
             else {
                 stk.pop();
-                res = max(res, stk.empty() ? (i - last) : (i - stk.top()));
+                res = max(res, i - (stk.empty() ? last : stk.top()));
             }
         }
         return res;

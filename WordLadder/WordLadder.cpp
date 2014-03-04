@@ -25,9 +25,9 @@ using namespace std;
 class Solution {
 public:
     int ladderLength(string start, string end, unordered_set<string> &dict) {
-        unordered_set<string> visit;
         queue<string> cq, nq;
-        cq.push(start);
+        unordered_set<string> visit;
+        cq.push(start), visit.insert(start);
         int level = 1;
         while (!cq.empty()) {
             while (!cq.empty()) {
@@ -43,8 +43,8 @@ public:
                     cur[i] = t;
                 }
             }
-            level++;
             swap(cq, nq);
+            level++;
         }
         return 0;
     }
