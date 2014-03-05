@@ -15,7 +15,10 @@
 //============================================================================
 
 #include <iostream>
+
 using namespace std;
+
+
 /**
 * Definition for singly-linked list.
 */
@@ -24,7 +27,6 @@ struct ListNode {
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
 };
-
 
 class Solution {
 public:
@@ -41,28 +43,34 @@ public:
             curNode = curNode->next;
         }
 
-        int i = 0, j = vs.size()-1;
+        int i = 0, j = vs.size() - 1;
         while (i < j) {
             vs[i]->next = vs[j];
-            vs[j]->next = vs[i+1];
+            vs[j]->next = vs[i + 1];
             i++, j--;
         }
         vs[i]->next = NULL;
     }
 
     void reorderList2(ListNode *head) {
-        if (head == NULL) return;
-        ListNode * slowNode = head, *fastNode = head;
-        while (fastNode->next != NULL && fastNode->next->next != NULL) slowNode = slowNode->next, fastNode = fastNode->next->next;
-        if (slowNode == fastNode) return;
-        fastNode = reverse(slowNode->next);
-        slowNode->next = NULL;
-        head = merge(head, fastNode);
+        if (head == NULL || head->next == NULL) return;
+        ListNode * frontHead, *backHead;
+        split(head, frontHead, backHead);
+        backHead = reverse(backHead);
+        merge(frontHead, backHead);
     }
 
-    ListNode * reverse(ListNode * curNode) {
-        ListNode * preNode = NULL;
-        while (curNode != NULL) {
+    void split(ListNode * head, ListNode *& frontHead, ListNode *& backHead) {
+        ListNode * fastNode = head, *slowNode = head;
+        for (; fastNode->next != NULL && fastNode->next->next != NULL; fastNode = fastNode->next->next) slowNode = slowNode->next;
+        backHead = slowNode->next;
+        slowNode->next = NULL;
+        frontHead = head;
+    }
+
+    ListNode * reverse(ListNode * head) {
+        ListNode * preNode = NULL, *curNode = head;
+        while (curNode) {
             ListNode * nextNode = curNode->next;
             curNode->next = preNode;
             preNode = curNode;
@@ -71,21 +79,26 @@ public:
         return preNode;
     }
 
-    ListNode * merge(ListNode * frontNode, ListNode * backNode) {
-        ListNode * head = new ListNode(-1), *curNode = head;
-        while (frontNode != NULL || backNode != NULL) {
-            if (frontNode != NULL) curNode->next = frontNode, frontNode = frontNode->next, curNode = curNode->next;
-            if (backNode != NULL) curNode->next = backNode, backNode = backNode->next, curNode = curNode->next;
+    void merge(ListNode * frontHead, ListNode * backHead) {
+        ListNode * head = pushDummy(NULL), *curNode = head;
+        while (frontHead || backHead) {
+            if (frontHead) curNode->next = frontHead, frontHead = frontHead->next, curNode = curNode->next;
+            if (backHead) curNode->next = backHead, backHead = backHead->next, curNode = curNode->next;
         }
-
-        return deleteNode(head);
+        head = popDummy(head);
     }
 
-    ListNode * deleteNode(ListNode * curNode) {
-        ListNode * toDel = curNode;
-        curNode = curNode->next;
-        delete toDel;
-        return curNode;
+    ListNode * pushDummy(ListNode * head) {
+        ListNode * newNode = new ListNode(-1);
+        newNode->next = head;
+        return newNode;
+    }
+
+    ListNode * popDummy(ListNode * head) {
+        ListNode * delNode = head;
+        head = head->next;
+        delete delNode;
+        return head;
     }
 };
 
