@@ -6,7 +6,7 @@
 // the contiguous subarray [4,1,2,1] has the largest sum = 6.
 //
 // Complexity:
-// Greedy O(n) time
+// dp O(n) time
 // Divide and Conquer O(nlog(n)) time
 //============================================================================
 
