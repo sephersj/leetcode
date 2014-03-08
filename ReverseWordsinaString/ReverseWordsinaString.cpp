@@ -19,16 +19,33 @@
 //============================================================================
 
 #include <iostream>
+#include <sstream>
+#include <vector>
 #include <algorithm>
 
 using namespace std;
 
 class Solution {
 public:
-    void reverseWords1(string &s) {
-    
+    void reverseWords(string & s) {
+        reverseWords1(s);
     }
-    s
+
+    void reverseWords1(string &s) {
+        istringstream is(s);
+        string word;
+        vector<string> vs;
+        while (is >> word) vs.push_back(word);
+        reverse(begin(vs), end(vs));
+        s.clear();
+        ostringstream os;
+        for (int i = 0; i < vs.size(); i++) {
+            if (i != 0) os << " ";
+            os << vs[i];
+        }
+        s = os.str();
+    }
+
     void reverseWords2(string &s) {
         removeSpaces(s);
         if (s.empty()) return;
@@ -36,7 +53,7 @@ public:
         while (true) {
             i = j;
             while (j < N && !isspace(s[j])) j++;
-            reverse(s.begin()+i, s.begin()+j);
+            reverse(s.begin() + i, s.begin() + j);
             if (j == N) break;
             j++;
         }
