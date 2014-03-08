@@ -38,7 +38,7 @@ public:
         int end = num.size();
         if (begin == end) res.push_back(num);
         unordered_set<int> visit;
-        for (int cur = begin; j < end; j++) {
+        for (int cur = begin; cur < end; cur++) {
             if (visit.count(num[cur])) continue;
             visit.insert(num[cur]);
             swap(num[begin], num[cur]);

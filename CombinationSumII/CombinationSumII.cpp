@@ -24,25 +24,23 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int> > combinationSum2(vector<int> &candidates, int target) {
-        sort(begin(candidates), end(candidates));
-        vector<vector<int> > res;
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+        sort(begin(num), end(num));
         vector<int> path;
-        combinationSumHelper(candidates, target, 0, path, res);
+        vector<vector<int> > res;
+        go(num, target, 0, path, res);
         return res;
     }
 
-    void combinationSumHelper(vector<int> &candidates, int target, int start, vector<int> & path, vector<vector<int> > & res) {
-        if (target < 0) return;
-        if (target == 0) {
-            res.push_back(path);
+    void go(vector<int> & num, int target, int begin, vector<int> & path, vector<vector<int>> & res) {
+        if (target <= 0){
+            if (target == 0) res.push_back(path);
             return;
         }
-
-        for (int index = start; index < candidates.size(); index++) {
-            if (index > start && candidates[index] == candidates[index - 1]) continue;
-            path.push_back(candidates[index]);
-            combinationSumHelper(candidates, target - candidates[index], index + 1, path, res);
+        for (int cur = begin; cur < num.size(); cur++) {
+            if (cur > begin && num[cur - 1] == num[cur]) continue;
+            path.push_back(num[cur]);
+            go(num, target - num[cur], cur + 1, path, res);
             path.pop_back();
         }
     }

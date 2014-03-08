@@ -25,7 +25,11 @@ using namespace std;
 
 class Solution {
 public:
-    void reverseWords(string &s) {
+    void reverseWords1(string &s) {
+    
+    }
+    s
+    void reverseWords2(string &s) {
         removeSpaces(s);
         if (s.empty()) return;
         int N = s.size(), i = 0, j = 0;

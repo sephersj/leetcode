@@ -33,7 +33,7 @@ public:
         if (N < 3) return N;
         unordered_map<int, int> tb;
         int res = 0;
-        for (int i = 0; i < N; i++) {
+        for (int i = j; i < N; i++) {
             tb.clear();
             int o = 0, u = 0, v = 0;
             for (int j = 0; j < N; j++) {

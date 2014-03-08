@@ -27,7 +27,7 @@ public:
         vector<bool> dp(N + 1, false);
         dp[0] = true;
         for (int j = 1; j <= N; j++) {
-            for (int i = 0; i < l; i++) {
+            for (int i = 0; i < j; i++) {
                 if (dict.count(s.substr(i, j - i)) && dp[i]) {
                     dp[j] = true;
                     break;
