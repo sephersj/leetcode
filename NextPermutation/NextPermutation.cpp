@@ -19,7 +19,7 @@
 //============================================================================
 
 #include <vector>
-#include <cassert>
+
 using namespace std;
 
 class Solution {
@@ -40,5 +40,29 @@ public:
 };
 
 int main() {
+    Solution sol;
+    vector<int> num;
+
+    {
+        num = { 1, 2, 3 };
+        sol.nextPermutation(num);
+        for (auto it : num) cout << it << " ";
+        cout << endl;
+    }
+
+    {
+        num = { 3, 2, 1 };
+        sol.nextPermutation(num);
+        for (auto it : num) cout << it << " ";
+        cout << endl;
+    }
+
+    {
+        num = { 1, 1, 5 };
+        sol.nextPermutation(num);
+        for (auto it : num) cout << it << " ";
+        cout << endl;
+    }
+
     return 0;
 }

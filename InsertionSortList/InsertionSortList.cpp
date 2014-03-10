@@ -7,6 +7,7 @@
 //============================================================================
 
 #include <iostream>
+
 using namespace std;
 /**
  * Definition for singly-linked list.
@@ -20,18 +21,6 @@ struct ListNode {
 class Solution {
 public:
     ListNode *insertionSortList(ListNode *head) {
-        return insertionSortList2(head);
-    }
-
-    ListNode *insertionSortList1(ListNode * head) {
-        if (head == NULL || head->next == NULL) return head;
-        ListNode * newHead = pushDummy(NULL);
-        newHead->next = insertionSortList1(head->next);
-        insertNode(newHead, head);
-        return popDummy(newHead);
-    }
-
-    ListNode *insertionSortList2(ListNode * head) {
         ListNode * newHead = pushDummy(NULL), * curNode = head;
         while (curNode != NULL) {
             ListNode * nextNode = curNode->next;
@@ -64,5 +53,17 @@ public:
 
 
 int main() {
+    Solution sol;
+    ListNode *head;
+
+    {
+        head = new ListNode(3);
+        head->next = new ListNode(2);
+        head->next->next = new ListNode(4);
+        head = sol.insertionSortList(head);
+        for (; head; head = head->next) cout << head->val << " ";
+        cout << endl;
+    }
+
     return 0;
 }
