@@ -19,18 +19,17 @@ class Solution {
 public:
     bool isValidSudoku(vector<vector<char> > &board) {
         if (board.size() != 9) return false;
-        for (int r = 0; r < 9; r++) if (board[r].size() != 9) return false;
-        for (int r = 0; r < 9; r++) {
-            vector<bool> visit(9, false);
-            for (int c = 0; c < 9; c++) if (!check(board, r, c, visit)) return false;
-        }
-        for (int c = 0; c < 9; c++) {
-            vector<bool> visit(9, false);
-            for (int r = 0; r < 9; r++) if (!check(board, r, c, visit)) return false;
-        }
-        for (int i = 0; i < 9; i++) {
-            vector<bool> visit(9, false);
-            for (int j = 0; j < 9; j++) if (!check(board, i / 3 * 3 + j / 3, i % 3 * 3 + j % 3, visit)) return false;
+        vector<bool> visit(9, false);
+        for (int row = 0; row < 9; row++) {
+            if (board[row].size() != 9) return false;
+            for (int col = 0; col < 9; col++) {
+                fill(begin(visit), end(visit), false);
+                for (int k = 0; k < 9; k++) if (!check(board, row, k, visit)) return false;
+                fill(begin(visit), end(visit), false);
+                for (int k = 0; k < 9; k++) if (!check(board, k, col, visit)) return false;
+                fill(begin(visit), end(visit), false);
+                for (int k = 0; k < 9; k++) if (!check(board, row / 3 * 3 + k / 3, col / 3 * 3 + k % 3, visit)) return false;
+            }
         }
         return true;
     }
