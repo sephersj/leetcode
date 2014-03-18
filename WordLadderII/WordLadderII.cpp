@@ -30,19 +30,19 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<string> > findLadders(string start, string end, unordered_set<string> &dict) {
-        unordered_map<string, vector<string> > from;
+    vector<vector<string>> findLadders(string start, string end, unordered_set<string> &dict) {
         unordered_set<string> cq, nq, visit;
+        unordered_map<string, vector<string> > froms;
         cq.insert(start);
         while (!cq.empty() && !cq.count(end)) {
             for (auto & cur : cq) visit.insert(cur);
             for (auto & cur : cq) {
-                string next = cur;
+                auto next = cur;
                 for (int i = 0; i < next.size(); i++) {
                     char t = next[i];
                     for (char c = 'a'; c <= 'z'; c++) {
                         next[i] = c;
-                        if (next == end || (dict.count(next) && !visit.count(next))) from[next].push_back(cur), nq.insert(next);
+                        if (next == end || (dict.count(next) && !visit.count(next))) nq.insert(next), froms[next].push_back(cur);
                     }
                     next[i] = t;
                 }
@@ -50,17 +50,23 @@ public:
             swap(cq, nq);
             nq.clear();
         }
-        vector<vector<string> > res;
         vector<string> path;
-        getPath(end, start, from, path, res);
+        vector<vector<string> > res;
+        path.push_back(end);
+        go(end, start, froms, path, res);
         return res;
     }
 
-    void getPath(string & cur, string & start, unordered_map<string, vector<string> > & from, vector<string> & path, vector<vector<string> > & res) {
-        path.push_back(cur);
-        if (cur == start) res.push_back(vector<string>(path.rbegin(), path.rend()));
-        else for (auto next : from[cur]) getPath(next, start, from, path, res);
-        path.pop_back();
+    void go(string & cur, string & end, unordered_map<string, vector<string> > & froms, vector<string> & path, vector<vector<string> > & res) {
+        if (cur == end) {
+            res.push_back(vector<string>(path.rbegin(), path.rend()));
+            return;
+        }
+        for (auto & next : froms[cur]) {
+            path.push_back(next);
+            go(next, end, froms, path, res);
+            path.pop_back();
+        }
     }
 };
 

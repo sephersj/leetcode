@@ -26,9 +26,9 @@ public:
     }
 
     double findMedianSortedArrays(int A[], int m, int B[], int n) {
-        int total = m + n;
-        if (total % 2) return findKth(A, m, B, n, total / 2 + 1);
-        return (findKth(A, m, B, n, total / 2) + findKth(A, m, B, n, total / 2 + 1)) / 2.0;
+        int total = m + n, half = total / 2;
+        if (total % 2) return findKth(A, m, B, n, half + 1);
+        return (findKth(A, m, B, n, half) + findKth(A, m, B, n, half + 1)) / 2.0;
     }
 
     int findKth(int A[], int m, int B[], int n, int k) {
